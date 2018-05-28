@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 
+/**
+ * 主页
+ * @author hp
+ *
+ */
 @Controller
 @RequestMapping("/home")
 public class HomeController {
