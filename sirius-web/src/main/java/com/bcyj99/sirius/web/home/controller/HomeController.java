@@ -17,7 +17,7 @@ import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 
 /**
- * 主页
+ * 这个是分支1.0.x
  * @author hp
  *
  */
