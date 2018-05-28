@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bcyj99.sirius.core.sys.dao.SysParamMapper">
+  <resultMap id="BaseResultMap" type="com.bcyj99.sirius.core.sys.vo.SysParam">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="param_key" jdbcType="VARCHAR" property="paramKey" />
+    <result column="param_value" jdbcType="VARCHAR" property="paramValue" />
+    <result column="param_remark" jdbcType="VARCHAR" property="paramRemark" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, param_key, param_value, param_remark, create_date, create_by, update_date, update_by
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_param
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_param
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_param
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bcyj99.sirius.core.sys.vo.SysParam">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_param (param_key, param_value, param_remark, 
+      create_date, create_by, update_date, 
+      update_by)
+    values (#{paramKey,jdbcType=VARCHAR}, #{paramValue,jdbcType=VARCHAR}, #{paramRemark,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bcyj99.sirius.core.sys.vo.SysParam">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_param
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="paramKey != null">
+        param_key,
+      </if>
+      <if test="paramValue != null">
+        param_value,
+      </if>
+      <if test="paramRemark != null">
+        param_remark,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="paramKey != null">
+        #{paramKey,jdbcType=VARCHAR},
+      </if>
+      <if test="paramValue != null">
+        #{paramValue,jdbcType=VARCHAR},
+      </if>
+      <if test="paramRemark != null">
+        #{paramRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bcyj99.sirius.core.sys.vo.SysParam">
+    update sys_param
+    <set>
+      <if test="paramKey != null">
+        param_key = #{paramKey,jdbcType=VARCHAR},
+      </if>
+      <if test="paramValue != null">
+        param_value = #{paramValue,jdbcType=VARCHAR},
+      </if>
+      <if test="paramRemark != null">
+        param_remark = #{paramRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bcyj99.sirius.core.sys.vo.SysParam">
+    update sys_param
+    set param_key = #{paramKey,jdbcType=VARCHAR},
+      param_value = #{paramValue,jdbcType=VARCHAR},
+      param_remark = #{paramRemark,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectPagedSysParams" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_param
+    <where>
+        <if test="record.paramKey != null">
+            and param_key like concat('%',#{record.paramKey,jdbcType=VARCHAR},'%') 
+        </if>
+        <if test="record.paramValue != null">
+	        and param_value like concat('%',#{record.paramValue,jdbcType=VARCHAR},'%')
+	      </if>
+	      <if test="record.paramRemark != null">
+	        and param_remark like concat('%',#{record.paramRemark,jdbcType=VARCHAR},'%')
+	      </if>
+    </where>
+    order by param_key
+    limit #{pageStart,jdbcType=DECIMAL},#{pageSize,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="selectPagedSysParamsCount" resultType="java.lang.Integer" >
+    select 
+        count(1)
+    from sys_param
+    <where>
+        <if test="record.paramKey != null">
+            and param_key like concat('%',#{record.paramKey,jdbcType=VARCHAR},'%') 
+        </if>
+        <if test="record.paramValue != null">
+	        and param_value like concat('%',#{record.paramValue,jdbcType=VARCHAR},'%')
+	      </if>
+	      <if test="record.paramRemark != null">
+	        and param_remark like concat('%',#{record.paramRemark,jdbcType=VARCHAR},'%')
+	      </if>
+    </where>
+  </select>
+</mapper>

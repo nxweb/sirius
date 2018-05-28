@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.bcyj99</groupId>
+  <artifactId>sirius</artifactId>
+  <version>1.0</version>
+  <packaging>pom</packaging>
+
+  <name>sirius</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+  </dependencies>
+  <modules>
+    <module>sirius-core</module>
+    <module>sirius-scheduler</module>
+    <module>sirius-console</module>
+    <module>sirius-web</module>
+    <module>sirius-quartz</module>
+    <module>sirius-api</module>
+  </modules>
+</project>

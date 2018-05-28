@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+xmlns:beans="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+	<http pattern="/js/**" security="none"/>
+    <http pattern="/css/**" security="none"/>
+    <http pattern="/image/**" security="none"/>
+    <http pattern="/themes/**" security="none"/>
+    <http pattern="/" security="none"/>
+    <http pattern="/home/getKaptcha*" security="none"/>
+    <http pattern="/api/**" create-session="never" entry-point-ref="myLoginUrlAuthenticationEntryPoint">
+        <csrf disabled="true"/>
+    </http>
+    
+    <global-method-security pre-post-annotations="enabled">
+        <expression-handler ref="expressionHandler"/>
+    </global-method-security>
+    
+    <beans:bean id="myPermissionEvaluator" class="com.bcyj99.sirius.core.authentication.access.MyPermissionEvaluator"/>
+    
+    <beans:bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+        <beans:property name="permissionEvaluator" ref="myPermissionEvaluator"/>
+    </beans:bean>
+    
+    <beans:bean id="expressionHandlerWeb" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+        <beans:property name="permissionEvaluator" ref="myPermissionEvaluator"/>
+    </beans:bean>
+    
+    <beans:bean id="myLoginUrlAuthenticationEntryPoint" class="com.bcyj99.sirius.core.authentication.access.MyLoginUrlAuthenticationEntryPoint">
+        <beans:constructor-arg name="loginFormUrl" value="/home/loginPage"/>
+    </beans:bean>
+    
+	<http entry-point-ref="myLoginUrlAuthenticationEntryPoint">
+	    <headers>
+		    <frame-options policy="SAMEORIGIN"/>
+		</headers>
+		
+		<!-- <csrf disabled="false" request-matcher-ref=""/> -->
+		
+		<!-- <access-denied-handler /> -->
+		
+		<expression-handler ref="expressionHandlerWeb" />
+		
+		<logout delete-cookies="JSESSIONID" 
+		        logout-url="/logout" invalidate-session="true"
+		        logout-success-url="/home/loginPage"/>
+		
+		<session-management invalid-session-url="/home/reloginPage" session-fixation-protection="migrateSession">
+		    <concurrency-control max-sessions="1" error-if-maximum-exceeded="false"/>
+		</session-management>
+		
+		<custom-filter ref="myUsernamePasswordAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
+		<custom-filter ref="myFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>
+	</http>
+	
+	<beans:bean id="mySimpleUrlAuthenticationSuccessHandler" class="com.bcyj99.sirius.core.authentication.handler.MySimpleUrlAuthenticationSuccessHandler">
+	    <beans:constructor-arg name="defaultTargetUrl" value="/home/indexPage"/>
+	</beans:bean>
+	
+	<beans:bean id="mySimpleUrlAuthenticationFailureHandler" class="com.bcyj99.sirius.core.authentication.handler.MySimpleUrlAuthenticationFailureHandler">
+	    <beans:constructor-arg name="defaultFailureUrl" value="/home/loginPage"/>
+	    <beans:property name="useForward" value="true"/>
+	</beans:bean>
+	
+	<beans:bean id="myUsernamePasswordAuthenticationFilter" class="com.bcyj99.sirius.core.authentication.filter.MyUsernamePasswordAuthenticationFilter">
+	    <beans:property name="authenticationManager" ref="myAuthenticationManager"/>
+	    <beans:property name="authenticationSuccessHandler" ref="mySimpleUrlAuthenticationSuccessHandler"/>
+	    <beans:property name="authenticationFailureHandler" ref="mySimpleUrlAuthenticationFailureHandler"/>
+	</beans:bean>
+	
+	<beans:bean id="myFilterSecurityInterceptor" class="com.bcyj99.sirius.core.authentication.filter.MyFilterSecurityInterceptor">
+	    <beans:property name="securityMetadataSource" ref="myFilterInvocationSecurityMetadataSource"/>
+	    <beans:property name="accessDecisionManager" ref="myAccessDecisionManager"/>
+	    <beans:property name="authenticationManager" ref="myAuthenticationManager"/>
+	</beans:bean>
+	
+	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	
+	<beans:bean id="myUserDetailsService" class="com.bcyj99.sirius.core.authentication.access.MyUserDetailsService"/>
+	
+	<beans:bean id="myAuthenticationProvider"
+		class="com.bcyj99.sirius.core.authentication.provider.MyAuthenticationProvider">
+		<beans:property name="userDetailsService" ref="myUserDetailsService"/>
+		<beans:property name="passwordEncoder" ref="bcryptPasswordEncoder"/>
+	</beans:bean>
+	
+	<beans:bean id="myAccessDecisionManager"
+		class="com.bcyj99.sirius.core.authentication.access.MyAccessDecisionManager">
+	</beans:bean>
+	
+	<beans:bean id="myFilterInvocationSecurityMetadataSource"
+		class="com.bcyj99.sirius.core.authentication.access.MyFilterInvocationSecurityMetadataSource">
+		<beans:constructor-arg name="secuResourceMapper" ref="secuResourceMapper"/>
+		<beans:constructor-arg name="redisTemplate" ref="redisTemplate"/>
+	</beans:bean>
+	
+	<authentication-manager alias="myAuthenticationManager">
+		<authentication-provider ref="myAuthenticationProvider"/>
+	</authentication-manager>
+</beans:beans>

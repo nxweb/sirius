@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+        "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<!-- 解释： 在tld 文件中，映射了标记名和处理程序类； <tallib>元素，代表开始一个标记库的描述 <tligversion>元素，代表标记库的版本 
+	<jspversion>元素，代表标记所支持的JSP 的版本 <shortname>为标记库起别名，相当于注释，无实际用途 <tag>元素，代表开始描述一个标记，其下子元素如下： 
+	<name>——为标记处理类起的标记名 <tagclass>——指定标记处理类的全名(即带包的名字) <bodycontent>——标记体的类型，该示例中不需要标记体，所有设置为EMPTY，该值的其他取值在后续内容中讲解 
+	<tag>中的子元素 <attribute>用于为标签声明属性，其子元素如下： <name>——用于指定属性名称 <required>——用于声明该属性是否为必需的，本例中声明color、loop 
+	两个属性都不是必需的。 -->
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd" version="2.0">
+	<tlibversion>1.0</tlibversion>
+	<jspversion>1.1</jspversion>
+	<shortname>sirius</shortname>
+    <uri>http://ntt123.sirius.com/jsp/jstl/core</uri>
+	<tag>
+		<name>script</name> <!-- 该标签为<sirius:script /> -->
+		<tagclass>com.bcyj99.sirius.core.common.tag.SiriusScriptTag</tagclass>
+		
+		<!-- 
+		tagdependent：标签体内容直接被写入BodyContent，由自定义标签类来进行处理，而不被JSP容器解释，
+		JSP：接受所有JSP语法，如定制的或内部的tag、scripts、静态HTML、脚本元素、JSP指令和动作。如：
+		empty：空标记，即起始标记和结束标记之间没有内容。
+		scriptless：接受文本、EL和JSP动作。如上述②使用<body-content>scriptless</body-content>则报错，具体可参考后面附源码
+		 -->
+		<bodycontent>empty</bodycontent>
+		<attribute>
+			<name>src</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>charset</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>language</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>

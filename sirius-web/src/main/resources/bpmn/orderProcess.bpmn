@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="sirius.order.process" name="佰城订单审批流程" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="saSubmit" name="受理提交" activiti:assignee="${createBy}"></userTask>
+    <userTask id="riskApproval" name="风控初审" activiti:candidateGroups="riskSpecialist"></userTask>
+    <userTask id="seniorRiskApproval" name="风控复审" activiti:candidateGroups="seniorSpecialist"></userTask>
+    <userTask id="accountantApproval" name="会计审核" activiti:candidateGroups="accountant"></userTask>
+    <userTask id="financeChiefApproval" name="财务主管审核" activiti:candidateGroups="financeChief"></userTask>
+    <userTask id="casherLoan" name="出纳放款" activiti:candidateGroups="casher"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="saSubmit"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="saSubmit" targetRef="riskApproval"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="riskApproval" targetRef="seniorRiskApproval"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="seniorRiskApproval" targetRef="accountantApproval"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="accountantApproval" targetRef="financeChiefApproval"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="financeChiefApproval" targetRef="casherLoan"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="casherLoan" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_sirius.order.process">
+    <bpmndi:BPMNPlane bpmnElement="sirius.order.process" id="BPMNPlane_sirius.order.process">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="26.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="235.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="saSubmit" id="BPMNShape_saSubmit">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="16.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="riskApproval" id="BPMNShape_riskApproval">
+        <omgdc:Bounds height="55.0" width="105.0" x="420.0" y="16.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="seniorRiskApproval" id="BPMNShape_seniorRiskApproval">
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="16.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="accountantApproval" id="BPMNShape_accountantApproval">
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="financeChiefApproval" id="BPMNShape_financeChiefApproval">
+        <omgdc:Bounds height="55.0" width="105.0" x="420.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="casherLoan" id="BPMNShape_casherLoan">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="75.0" y="43.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="43.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="305.0" y="43.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="43.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="525.0" y="43.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="43.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="702.0" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="140.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="650.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="525.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="420.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="252.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="252.0" y="290.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

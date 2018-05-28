@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bcyj99.sirius.core.security.dao.SecuRoleMapper">
+  <resultMap id="BaseResultMap" type="com.bcyj99.sirius.core.security.vo.SecuRole">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+    <result column="role_desc" jdbcType="VARCHAR" property="roleDesc" />
+    <result column="CREATE_BY" jdbcType="BIGINT" property="createBy" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="UPDATE_BY" jdbcType="BIGINT" property="updateBy" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <collection property="resources" ofType="com.bcyj99.sirius.core.security.vo.SecuResource" column="id" select="selectResourcesByRoleId"/>
+  </resultMap>
+  
+  <resultMap id="SecuResourceResultMap" type="com.bcyj99.sirius.core.security.vo.SecuResource">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+	    <result column="resource_name" jdbcType="VARCHAR" property="resourceName" />
+	    <result column="resource_code" jdbcType="VARCHAR" property="resourceCode" />
+	    <result column="resource_type" jdbcType="VARCHAR" property="resourceType" />
+	    <result column="resource_url" jdbcType="VARCHAR" property="resourceUrl" />
+	    <result column="resource_desc" jdbcType="VARCHAR" property="resourceDesc" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, role_name, role_code, role_desc, CREATE_BY, CREATE_DATE, UPDATE_BY, UPDATE_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from secu_role
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByRoleCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from secu_role
+    where role_code = #{roleCode,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectResourcesByRoleId" resultMap="SecuResourceResultMap" parameterType="long">
+    select 
+        s.id,s.resource_name,s.resource_code,s.resource_type,
+        s.resource_url,s.resource_desc
+    from secu_role_resource rs
+    left join secu_resource s on rs.resource_id=s.id
+    where rs.role_id=#{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectPagedRoles" resultMap="BaseResultMap">
+    select 
+        r.ID, r.role_name, r.role_code, r.role_desc, 
+        r.CREATE_BY, r.CREATE_DATE, r.UPDATE_BY, r.UPDATE_DATE
+    from secu_role r
+    <where>
+        <if test="role.roleName!=null">
+            and r.role_name like concat('%',#{role.roleName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="role.roleCode!=null">
+            and r.role_code like concat('%',#{role.roleCode,jdbcType=VARCHAR},'%')
+        </if>
+    </where>
+    limit #{pageStart,jdbcType=DECIMAL},#{pageSize,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="selectPagedRolesCount" resultType="int" >
+    select 
+        count(1)
+    from secu_role r
+    <where>
+        <if test="role.roleName!=null">
+            and r.role_name like concat('%',#{role.roleName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="role.roleCode!=null">
+            and r.role_code like concat('%',#{role.roleCode,jdbcType=VARCHAR},'%')
+        </if>
+    </where>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from secu_role
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bcyj99.sirius.core.security.vo.SecuRole">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into secu_role (role_name, role_code, role_desc, 
+      CREATE_BY, CREATE_DATE, UPDATE_BY, 
+      UPDATE_DATE)
+    values (#{roleName,jdbcType=VARCHAR}, #{roleCode,jdbcType=VARCHAR}, #{roleDesc,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=BIGINT}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bcyj99.sirius.core.security.vo.SecuRole">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into secu_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="roleCode != null">
+        role_code,
+      </if>
+      <if test="roleDesc != null">
+        role_desc,
+      </if>
+      <if test="createBy != null">
+        CREATE_BY,
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE,
+      </if>
+      <if test="updateBy != null">
+        UPDATE_BY,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCode != null">
+        #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null">
+        #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bcyj99.sirius.core.security.vo.SecuRole">
+    update secu_role
+    <set>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCode != null">
+        role_code = #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null">
+        role_desc = #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        CREATE_BY = #{createBy,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null">
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        UPDATE_BY = #{updateBy,jdbcType=BIGINT},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bcyj99.sirius.core.security.vo.SecuRole">
+    update secu_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      role_code = #{roleCode,jdbcType=VARCHAR},
+      role_desc = #{roleDesc,jdbcType=VARCHAR},
+      CREATE_BY = #{createBy,jdbcType=BIGINT},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      UPDATE_BY = #{updateBy,jdbcType=BIGINT},
+      UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bcyj99.sirius.core.sys.dao.SysDataDictionaryMapper">
+  <resultMap id="BaseResultMap" type="com.bcyj99.sirius.core.sys.vo.SysDataDictionary">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="dic_name" jdbcType="VARCHAR" property="dicName" />
+    <result column="dic_meaning" jdbcType="VARCHAR" property="dicMeaning" />
+    <result column="attribute_value" jdbcType="VARCHAR" property="attributeValue" />
+    <result column="attribute_meaning" jdbcType="VARCHAR" property="attributeMeaning" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, dic_name, dic_meaning, attribute_value, attribute_meaning, remark, create_date, 
+    create_by, update_date, update_by
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_data_dictionary
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_data_dictionary
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bcyj99.sirius.core.sys.vo.SysDataDictionary">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_data_dictionary (dic_name, dic_meaning, attribute_value, 
+      attribute_meaning, remark, create_date, 
+      create_by, update_date, update_by
+      )
+    values (#{dicName,jdbcType=VARCHAR}, #{dicMeaning,jdbcType=VARCHAR}, #{attributeValue,jdbcType=VARCHAR}, 
+      #{attributeMeaning,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bcyj99.sirius.core.sys.vo.SysDataDictionary">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_data_dictionary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dicName != null">
+        dic_name,
+      </if>
+      <if test="dicMeaning != null">
+        dic_meaning,
+      </if>
+      <if test="attributeValue != null">
+        attribute_value,
+      </if>
+      <if test="attributeMeaning != null">
+        attribute_meaning,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dicName != null">
+        #{dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicMeaning != null">
+        #{dicMeaning,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeValue != null">
+        #{attributeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeMeaning != null">
+        #{attributeMeaning,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bcyj99.sirius.core.sys.vo.SysDataDictionary">
+    update sys_data_dictionary
+    <set>
+      <if test="dicName != null">
+        dic_name = #{dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicMeaning != null">
+        dic_meaning = #{dicMeaning,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeValue != null">
+        attribute_value = #{attributeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="attributeMeaning != null">
+        attribute_meaning = #{attributeMeaning,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bcyj99.sirius.core.sys.vo.SysDataDictionary">
+    update sys_data_dictionary
+    set dic_name = #{dicName,jdbcType=VARCHAR},
+      dic_meaning = #{dicMeaning,jdbcType=VARCHAR},
+      attribute_value = #{attributeValue,jdbcType=VARCHAR},
+      attribute_meaning = #{attributeMeaning,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectPagedDictionarys" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_data_dictionary
+    <where>
+      <if test="record.dicName != null">
+        and dic_name like concat('%',#{record.dicName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="record.dicMeaning != null">
+        and dic_meaning like concat('%',#{record.dicMeaning,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="record.attributeValue != null">
+        and attribute_value like concat('%',#{record.attributeValue,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="record.attributeMeaning != null">
+        and attribute_meaning like concat('%',#{record.attributeMeaning,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="record.remark != null">
+        and remark = #{record.remark,jdbcType=VARCHAR}
+      </if>
+      <if test="record.createDate != null">
+        and create_date = #{record.createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="record.createBy != null">
+        and create_by = #{record.createBy,jdbcType=VARCHAR}
+      </if>
+      <if test="record.updateDate != null">
+        and update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="record.updateBy != null">
+        and update_by = #{record.updateBy,jdbcType=VARCHAR}
+      </if>
+    </where>
+    order by create_date desc
+    limit #{pageStart,jdbcType=DECIMAL},#{pageSize,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="selectPagedDictionarysCount" resultType="java.lang.Integer" >
+    select 
+        count(1)
+    from sys_data_dictionary
+    <where>
+      <if test="record.dicName != null">
+        and dic_name like concat('%',#{record.dicName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="record.dicMeaning != null">
+        and dic_meaning like concat('%',#{record.dicMeaning,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="record.attributeValue != null">
+        and attribute_value like concat('%',#{record.attributeValue,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="record.attributeMeaning != null">
+        and attribute_meaning like concat('%',#{record.attributeMeaning,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="record.remark != null">
+        and remark = #{record.remark,jdbcType=VARCHAR}
+      </if>
+      <if test="record.createDate != null">
+        and create_date = #{record.createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="record.createBy != null">
+        and create_by = #{record.createBy,jdbcType=VARCHAR}
+      </if>
+      <if test="record.updateDate != null">
+        and update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="record.updateBy != null">
+        and update_by = #{record.updateBy,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  
+  <select id="selectDictionarys" resultMap="BaseResultMap" parameterType="com.bcyj99.sirius.core.sys.vo.SysDataDictionary">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_data_dictionary
+    <where>
+      <if test="dicName != null">
+        and dic_name = #{dicName,jdbcType=VARCHAR}
+      </if>
+      <if test="dicMeaning != null">
+        and dic_meaning = #{dicMeaning,jdbcType=VARCHAR}
+      </if>
+      <if test="attributeValue != null">
+        and attribute_value = #{attributeValue,jdbcType=VARCHAR}
+      </if>
+      <if test="attributeMeaning != null">
+        and attribute_meaning = #{attributeMeaning,jdbcType=VARCHAR}
+      </if>
+      <if test="remark != null">
+        and remark = #{remark,jdbcType=VARCHAR}
+      </if>
+      <if test="createDate != null">
+        and create_date = #{createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createBy != null">
+        and create_by = #{createBy,jdbcType=VARCHAR}
+      </if>
+      <if test="updateDate != null">
+        and update_date = #{updateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateBy != null">
+        and update_by = #{updateBy,jdbcType=VARCHAR}
+      </if>
+    </where>
+    order by create_date desc
+  </select>
+  
+  <select id="selectDictionaryVos" resultType="com.bcyj99.sirius.core.sys.vo.SysDataDictionaryVo"  parameterType="com.bcyj99.sirius.core.sys.vo.SysDataDictionary">
+    select 
+        dic_name as dicName, dic_meaning as dicMeaning, 
+        attribute_value as attributeValue, attribute_meaning as attributeMeaning
+    from sys_data_dictionary
+    <where>
+      <if test="dicName != null">
+        and dic_name = #{dicName,jdbcType=VARCHAR}
+      </if>
+      <if test="dicMeaning != null">
+        and dic_meaning = #{dicMeaning,jdbcType=VARCHAR}
+      </if>
+      <if test="attributeValue != null">
+        and attribute_value = #{attributeValue,jdbcType=VARCHAR}
+      </if>
+      <if test="attributeMeaning != null">
+        and attribute_meaning = #{attributeMeaning,jdbcType=VARCHAR}
+      </if>
+      <if test="remark != null">
+        and remark = #{remark,jdbcType=VARCHAR}
+      </if>
+      <if test="createDate != null">
+        and create_date = #{createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createBy != null">
+        and create_by = #{createBy,jdbcType=VARCHAR}
+      </if>
+      <if test="updateDate != null">
+        and update_date = #{updateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateBy != null">
+        and update_by = #{updateBy,jdbcType=VARCHAR}
+      </if>
+    </where>
+    order by attributeValue
+  </select>
+</mapper>

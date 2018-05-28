@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bcyj99.sirius.core.security.dao.SecuUserRoleMapper">
+  <resultMap id="BaseResultMap" type="com.bcyj99.sirius.core.security.vo.SecuUserRole">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from secu_user_role
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteUserRoles" parameterType="list">
+    delete from secu_user_role
+    where 
+    <foreach collection="list" item="item" separator="or">
+        (user_id=#{item.userId,jdbcType=BIGINT} and role_id= #{item.roleId,jdbcType=BIGINT})
+    </foreach>
+  </delete>
+  
+  <insert id="insert" parameterType="com.bcyj99.sirius.core.security.vo.SecuUserRole">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into secu_user_role (user_id, role_id)
+    values (#{userId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
+  </insert>
+  
+  <insert id="insertUserRoles" parameterType="list" useGeneratedKeys="true">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into secu_user_role (user_id, role_id)
+    values 
+    <foreach collection="list" item="item" separator=",">
+        (#{item.userId,jdbcType=BIGINT}, #{item.roleId,jdbcType=BIGINT})    
+    </foreach>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.bcyj99.sirius.core.security.vo.SecuUserRole">
+    update secu_user_role
+    set user_id = #{userId,jdbcType=BIGINT},
+      role_id = #{roleId,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, user_id, role_id
+    from secu_user_role
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, user_id, role_id
+    from secu_user_role
+  </select>
+</mapper>

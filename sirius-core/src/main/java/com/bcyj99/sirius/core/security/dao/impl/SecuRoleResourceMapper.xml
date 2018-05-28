@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bcyj99.sirius.core.security.dao.SecuRoleResourceMapper">
+  <resultMap id="BaseResultMap" type="com.bcyj99.sirius.core.security.vo.SecuRoleResource">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="role_id" jdbcType="BIGINT" property="roleId" />
+    <result column="resource_id" jdbcType="BIGINT" property="resourceId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from secu_role_resource
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteByRoleIdResourceId" parameterType="list">
+    delete from secu_role_resource 
+    <where>
+        <foreach collection="list" item="item" separator="or">
+            (role_id = #{item.roleId,jdbcType=BIGINT} and resource_id = #{item.resourceId,jdbcType=BIGINT})
+        </foreach>
+    </where>
+  </delete>
+  
+  <delete id="deleteByResourceId" parameterType="java.lang.Long">
+    delete from secu_role_resource
+    where resource_id = #{resourceId,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.bcyj99.sirius.core.security.vo.SecuRoleResource">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into secu_role_resource (role_id, resource_id)
+    values (#{roleId,jdbcType=BIGINT}, #{resourceId,jdbcType=BIGINT})
+  </insert>
+  
+  <insert id="insertRoleResources" parameterType="list" useGeneratedKeys="true">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into secu_role_resource (role_id, resource_id) values 
+    <foreach collection="list" item="item" separator=",">
+        (#{item.roleId,jdbcType=BIGINT}, #{item.resourceId,jdbcType=BIGINT})    
+    </foreach>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.bcyj99.sirius.core.security.vo.SecuRoleResource">
+    update secu_role_resource
+    set role_id = #{roleId,jdbcType=BIGINT},
+      resource_id = #{resourceId,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, role_id, resource_id
+    from secu_role_resource
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, role_id, resource_id
+    from secu_role_resource
+  </select>
+</mapper>

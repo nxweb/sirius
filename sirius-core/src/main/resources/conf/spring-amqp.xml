@@ -1,0 +1,62 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+           http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+           
+	<bean id="connectionFactory" class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">  
+	    <property name="host" value="${rabbitmq.host}" />  
+	    <property name="port" value="${rabbitmq.port}" />  
+	    <property name="username" value="${rabbitmq.username}" />  
+	    <property name="password" value="${rabbitmq.password}" />  
+	    <property name="virtualHost" value="${rabbitmq.virtualHost}" />
+		    <!-- 缓存模式   CONNECTION CHANNEL，默认的缓存模式是CHANNEL。
+		    当缓存模式是 CONNECTION时, 队列的自动声明等等 (参考 the section called “Automatic Declaration of Exchanges, Queues and Bindings”) 将不再支持。
+		    在框架(如． RabbitTemplate) 中使用的通道将会可靠地返回到缓存中.如果在框架外创建了通道 (如.直接访问connection(s)并调用 createChannel() ),
+		    你必须可靠地返回它们(通过关闭),也许需要在 finally 块中以防止耗尽通道.
+		     -->
+	    <property name="cacheMode" value="CHANNEL"/>
+		    <!-- 默认通道缓存25,多线程环境中，较小的缓存意味着通道的创建和关闭将以很高的速率运行.加大默认缓存大小可避免这种开销
+		     如果达到了限制,调用线程将会阻塞，直到某个通道可用或者超时, 在后者的情况中，将抛出 AmqpTimeoutException异常.-->
+	    <property name="channelCacheSize" value="10"/>
+	    	<!-- channelCheckoutTimeout属性. 当此属性的值大于０时， channelCacheSize会变成连接上创建通道数目的限制. -->
+	    <property name="channelCheckoutTimeout" value="200"/>
+	    	<!-- connectionLimit 1.5.5 新增，会限制连接的总数目,当达到限制值时，将 channelCheckoutTimeLimit  来等待空闲连接.如果时间超时了，将抛出 AmqpTimeoutException -->
+	    <property name="connectionLimit" value="50"/>
+	</bean>				
+	
+	<!-- <rabbit:queue name="myqueue"/>
+	
+	<rabbit:template id="amqpTemplate" connection-factory="connectionFactory"/>
+
+    <rabbit:admin connection-factory="connectionFactory"/> -->
+    
+    <rabbit:queue name="${rabbitmq.queue.a}" auto-declare="true"/>
+	<rabbit:queue name="${rabbitmq.queue.b}" auto-declare="true"/>
+	<rabbit:queue name="${rabbitmq.queue.c}" auto-declare="true"/>
+	<rabbit:queue name="${rabbitmq.queue.d}" auto-declare="true"/>
+	
+	<rabbit:topic-exchange name="${rabbitmq.exchangeName}" durable="true" auto-delete="false" auto-declare="true">
+	    <rabbit:bindings>
+	        <rabbit:binding queue="${rabbitmq.queue.a}" pattern="${rabbitmq.queue.a.routing}"/>
+	        <rabbit:binding queue="${rabbitmq.queue.b}" pattern="${rabbitmq.queue.b.routing}"/>
+	    </rabbit:bindings>
+	</rabbit:topic-exchange>
+	
+	<rabbit:admin connection-factory="connectionFactory"/>
+	
+	<rabbit:template id="amqpTemplate" connection-factory="connectionFactory"/>
+	
+	<bean id="simpleMessageConverter" class="org.springframework.amqp.support.converter.SimpleMessageConverter"/>
+	<bean id="amqpMessageProcessor" class="com.bcyj99.sirius.core.amqp.processor.AmqpMessageProcessor"/>
+	<bean id="messageListenerAdapter" class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">
+	    <constructor-arg name="delegate" ref="amqpMessageProcessor" />
+	    <constructor-arg name="messageConverter" ref="simpleMessageConverter"/>
+	    <property name="defaultListenerMethod" value="processMessage"/>
+	</bean>
+	<rabbit:listener-container connection-factory="connectionFactory">
+	    <rabbit:listener ref="messageListenerAdapter" queues="${rabbitmq.queue.a}"/>
+	</rabbit:listener-container>
+</beans>

@@ -1,0 +1,23 @@
+textarea
+{
+    border-top:1px solid #7898b8;
+    border-left:1px solid #7898b8;
+    border-right:1px solid #7898b8;
+    border-bottom:1px solid #7898b8;
+	padding:2px;
+	color:#339900;
+}
+input 
+{
+	font-size: 12px; 
+	font-family: "Verdana","Arial","Helvetica","sans-serif","宋体",simsun;
+}
+
+.mybtn{ font-size:12px;}
+.mybtn a{ border:1px solid #DDD; padding:2px 10px; text-decoration:none; border-radius:3px; box-shadow:1px 1px 1px #F3F3F3; color:#666;}
+.mybtn a:hover{ border:1px solid #FFAD32; background-color:#FFE5A1;}
+
+.link_a{color:#444444; cursor:pointer;text-decoration: none; outline: 0;}
+.link_a:hover{color:#21b8d9; text-decoration: none; outline: 0;}
+
+.single_file:hover{cursor:pointer;}
