@@ -1,6 +1,7 @@
 package com.bcyj99.sirius.core.sys.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
+import com.bcyj99.sirius.core.sys.processor.CacheProcessor;
 import com.bcyj99.sirius.core.sys.service.CacheService;
 
 @Service
@@ -19,9 +21,17 @@ public class CacheServiceImpl<E> implements CacheService<E> {
 	
 	@Autowired
 	private RedisTemplate<String,E> redisTemplate;
+	
+	public Set<String> getAllKeys(){
+		return redisTemplate.keys("*");
+	}
 
 	@Override
 	public E get(String key) {
+		if(!CacheProcessor.bloomFilter.mightContain(key)) {
+			return null;
+		}
+		
 		ValueOperations<String, E> valueOperations =redisTemplate.opsForValue();
 		E obj = valueOperations.get(key);
 		return obj;
