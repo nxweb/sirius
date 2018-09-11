@@ -336,6 +336,14 @@
 	</dependency>
 	<!--  poi end-->
 	
+	<!-- google.guava start -->
+	<dependency>
+	    <groupId>com.google.guava</groupId>
+	    <artifactId>guava</artifactId>
+	    <version>25.1-jre</version>
+	</dependency>
+	<!-- google.guava end -->
+	
   </dependencies>
   
   <build>  
