@@ -8,6 +8,10 @@ public interface CacheService<E> {
 	
     E get(String key);
     
+    boolean lock(String businessId, E uuid, int expireTimeInSecond);
+    
+    boolean releaseLock(String businessId, E uuid);
+    
     void set(String key,E value);
     
     void delete(String key);

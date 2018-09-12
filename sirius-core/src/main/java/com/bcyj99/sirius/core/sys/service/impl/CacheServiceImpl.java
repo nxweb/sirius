@@ -2,6 +2,7 @@ package com.bcyj99.sirius.core.sys.service.impl;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,5 +78,31 @@ public class CacheServiceImpl<E> implements CacheService<E> {
 		listOperations.rightPushAll(key, listValues);
 		
 		logger.info("写入redis-setList-成功.");
+	}
+	
+	/**
+	 * 互斥性。在任意时刻，只有一个客户端能持有锁。
+	         不会发生死锁。即使有一个客户端在持有锁的期间崩溃而没有主动解锁，也能保证后续其他客户端能加锁。
+	         具有容错性。只要大部分的Redis节点正常运行，客户端就可以加锁和解锁。
+	         解铃还须系铃人。加锁和解锁必须是同一个客户端，客户端自己不能把别人加的锁给解了。
+	 */
+	public boolean lock(String businessId, E uuid, int expireTimeInSecond) {
+		ValueOperations<String, E> ops = redisTemplate.opsForValue();
+		Boolean isSuccess = ops.setIfAbsent(businessId, uuid);
+		if(isSuccess) {
+			redisTemplate.expire(businessId, expireTimeInSecond, TimeUnit.SECONDS);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean releaseLock(String businessId, E uuid) {
+		ValueOperations<String, E> ops = redisTemplate.opsForValue();
+		E e = ops.get(businessId);
+		if(uuid.equals(e)) {
+			redisTemplate.delete(businessId);
+			return true;
+		}
+		return false;
 	}
 }
