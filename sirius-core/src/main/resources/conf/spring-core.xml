@@ -54,9 +54,12 @@
     
     <import resource="spring-mybatis.xml"/>
     <import resource="spring-kaptcha.xml"/>
-    <import resource="spring-redis.xml"/>
+    <!-- 只能有一个redis连接文件 -->
+    <!-- <import resource="spring-redis.xml"/> -->
+    <import resource="spring-redis-cluster.xml"/>
     <import resource="spring-security.xml"/>
     <import resource="spring-session.xml"/>
     <import resource="spring-amqp.xml"/>
     <import resource="spring-activiti.xml"/>
+    <import resource="spring-resttemplate.xml"/>
 </beans>
