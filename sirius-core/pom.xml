@@ -16,13 +16,21 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring.version>4.3.9.RELEASE</spring.version>
     <spring.security.version>4.2.3.RELEASE</spring.security.version>
+    <mybatis.version>3.4.4</mybatis.version>
+    <aspectj.version>1.8.10</aspectj.version>
+    <jackson.version>2.8.9</jackson.version>
+    <activiti.version>5.22.0</activiti.version>
+    <log4j.version>2.8.2</log4j.version>
+    <slf4j.version>1.7.25</slf4j.version>
+    <quartz.version>2.2.3</quartz.version>
+    <junit.version>4.12</junit.version>
   </properties>
 
   <dependencies>
     <dependency>
 	  <groupId>junit</groupId>
 	  <artifactId>junit</artifactId>
-	  <version>4.12</version>
+	  <version>${junit.version}</version>
 	  <scope>test</scope>
 	</dependency>
     
@@ -88,12 +96,6 @@
 	</dependency>
 	
 	<dependency>
-	    <groupId>org.aspectj</groupId>
-	    <artifactId>aspectjweaver</artifactId>
-	    <version>1.8.10</version>
-	</dependency>
-	
-	<dependency>
 	    <groupId>org.springframework.security</groupId>
 	    <artifactId>spring-security-core</artifactId>
 	    <version>${spring.security.version}</version>
@@ -146,6 +148,14 @@
     </dependency>
 	<!-- spring end -->
 	
+	<!-- aspectj start-->
+	<dependency>
+	    <groupId>org.aspectj</groupId>
+	    <artifactId>aspectjweaver</artifactId>
+	    <version>${aspectj.version}</version>
+	</dependency>
+	<!-- aspectj end-->
+	
 	<!-- jedis start-->
 	<dependency>
 	    <groupId>redis.clients</groupId>
@@ -158,7 +168,7 @@
 	<dependency>
 	    <groupId>org.mybatis</groupId>
 	    <artifactId>mybatis</artifactId>
-	    <version>3.4.4</version>
+	    <version>${mybatis.version}</version>
 	</dependency>
 	
 	<dependency>
@@ -178,12 +188,12 @@
 	<dependency>
 	    <groupId>org.quartz-scheduler</groupId>
 	    <artifactId>quartz</artifactId>
-	    <version>2.2.3</version>
+	    <version>${quartz.version}</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.quartz-scheduler</groupId>
 	    <artifactId>quartz-jobs</artifactId>
-	    <version>2.2.3</version>
+	    <version>${quartz.version}</version>
 	</dependency>
 	<!-- quartz end -->
 	
@@ -191,31 +201,32 @@
 	<dependency>
 	    <groupId>org.apache.logging.log4j</groupId>
 	    <artifactId>log4j-api</artifactId>
-	    <version>2.8.2</version>
+	    <version>${log4j.version}</version>
     </dependency>
 	<dependency>
 	    <groupId>org.apache.logging.log4j</groupId>
 	    <artifactId>log4j-core</artifactId>
-	    <version>2.8.2</version>
-	</dependency>
-	
-	<dependency>
-	    <groupId>org.slf4j</groupId>
-	    <artifactId>slf4j-api</artifactId>
-	    <version>1.7.25</version>
-	</dependency>
-	
-	<dependency>
-	    <groupId>org.slf4j</groupId>
-	    <artifactId>jcl-over-slf4j</artifactId>
-	    <version>1.7.25</version>
+	    <version>${log4j.version}</version>
 	</dependency>
 	
 	<dependency>
 	    <groupId>org.apache.logging.log4j</groupId>
 	    <artifactId>log4j-slf4j-impl</artifactId>
-	    <version>2.8.2</version>
+	    <version>${log4j.version}</version>
 	  </dependency>
+	
+	<dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-api</artifactId>
+	    <version>${slf4j.version}</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>jcl-over-slf4j</artifactId>
+	    <version>${slf4j.version}</version>
+	</dependency>
+	
 	<!-- log4j2-slf4j end -->
 	
 	<!-- MyBatis Generator start -->
@@ -247,12 +258,12 @@
 	<dependency>
 	    <groupId>org.activiti</groupId>
 	    <artifactId>activiti-engine</artifactId>
-	    <version>5.22.0</version>
+	    <version>${activiti.version}</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.activiti</groupId>
 	    <artifactId>activiti-spring</artifactId>
-	    <version>5.22.0</version>
+	    <version>${activiti.version}</version>
 	</dependency>
     <!-- activiti end -->
     
@@ -277,22 +288,22 @@
 	<dependency>
 	    <groupId>com.fasterxml.jackson.core</groupId>
 	    <artifactId>jackson-core</artifactId>
-	    <version>2.8.9</version>
+	    <version>${jackson.version}</version>
 	</dependency>
 	<dependency>
 	    <groupId>com.fasterxml.jackson.core</groupId>
 	    <artifactId>jackson-databind</artifactId>
-	    <version>2.8.9</version>
+	    <version>${jackson.version}</version>
 	</dependency>
 	<dependency>
 	    <groupId>com.fasterxml.jackson.core</groupId>
 	    <artifactId>jackson-annotations</artifactId>
-	    <version>2.8.9</version>
+	    <version>${jackson.version}</version>
 	</dependency>
 	<dependency>
 	    <groupId>com.fasterxml.jackson.dataformat</groupId>
 	    <artifactId>jackson-dataformat-xml</artifactId>
-	    <version>2.8.9</version>
+	    <version>${jackson.version}</version>
 	</dependency>
     <!-- jackson end -->
     
